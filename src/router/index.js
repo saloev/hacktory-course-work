@@ -17,7 +17,6 @@ router.beforeEach((to, from, next) => {
   };
 
   if (to.meta && to.meta.auth) {
-    store.dispatch('route', to);
     const params = Object.assign({}, { name: to.meta.api, params: to.params }, to.meta);
     store
       .dispatch('AuthUser', params)

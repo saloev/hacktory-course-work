@@ -75,6 +75,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   props: {
     source: String,
@@ -100,7 +101,11 @@ export default {
       }
 
       this.$store.dispatch('userAuth', this.form).then((res) => {
-        console.log(res);
+        if (!res) {
+          this.errorText = 'User not found';
+        } else {
+          this.$router.push({ name: 'about' });
+        }
       }).catch((err) => {
         console.error(err);
       });
