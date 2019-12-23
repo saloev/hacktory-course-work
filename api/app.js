@@ -24,15 +24,6 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-connection.query('SELECT 1 + 1 AS solution', (err, rows) => {
-  if (err) throw err;
-
-  console.log('The solution is: ', rows[0].solution);
-});
-
-
-//
-
 // server configuration
 const PORT = 3000;
 
@@ -41,12 +32,18 @@ app.post('/auth', (request, response) => {
   const post = request.body;
   const { login } = post;
   const { pass } = post;
-  const sql 
-  console.log(request.body); // your JSON
-  response.send(request.body); // echo the result back
+  const sql = `select * from users where login='${login}' and password='${pass}'`;
+
+  connection.query(sql, (err, rows) => {
+    if (err) throw err;
+
+    const user = rows[0];
+
+    response.send(user);
+  });
 });
 
-connection.end();
+// connection.end();
 
 // make the server listen to requests
 app.listen(PORT, () => {
