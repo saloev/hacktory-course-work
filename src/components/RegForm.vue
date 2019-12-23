@@ -77,10 +77,6 @@
 <script>
 /* eslint-disable */
 export default {
-  props: {
-    source: String,
-  },
-
   data: () => ({
     form: {
       login: null,
@@ -88,28 +84,59 @@ export default {
     },
 
     errorText: false,
+    text: '',
   }),
 
+  computed: {
+    user () {
+      return this.$store.getters.user;
+      // Or return basket.getters.fruitsCount
+      // (depends on your design decisions).
+    }
+  },
+  watch: {
+    user (newCount, oldCount) {
+      console.log(`We have ${newCount} fruits now, yaay!`)
+    }
+  },
+
+   created() {
+    this.$store.watch(
+      (state, getters) => getters.user,
+      (newValue, oldValue) => {
+        const {login, id} = this.$store.state.user;
+        console.log(login, id);
+        if (login && id) {
+          this.$router.push({name: 'about'});
+        }
+      },
+    );
+   },
   methods: {
     submitForm() {
       if (!this.form.login || !this.form.pass) {
-        this.errorText = 'Please fill form';
+        this.text = 'Please fill form';
+        this.errorText = true;
 
-        setTimeout(() => {
-          this.errorText = false;
-        }, 2500);
+        this.hideErrorMessage();
       }
 
       this.$store.dispatch('userAuth', this.form).then((res) => {
-        if (!res) {
-          this.errorText = 'User not found';
-        } else {
-          this.$router.push({ name: 'about' });
-        }
+
+          // this.$router.push({ name: 'about' });
       }).catch((err) => {
+          this.text = 'User not found';
+          this.errorText = true;
+          this.hideErrorMessage();
         console.error(err);
       });
     },
+
+    hideErrorMessage() {
+      setTimeout(() => {
+          this.errorText = false;
+      }, 2500);
+    }
   },
 };
 </script>

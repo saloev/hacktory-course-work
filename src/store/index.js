@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+
 import * as API_CONF from '../config';
 import API from './api';
 
@@ -22,6 +23,12 @@ export default new Vuex.Store({
       }).catch((err) => {
         console.error(err);
       });
+    },
+  },
+
+  getters: {
+    user(state) {
+      return state.user;
     },
   },
   modules: {

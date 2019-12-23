@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <RegForm msg="Welcome to Your Vue.js App"/>
+    <RegForm/>
   </div>
 </template>
 
