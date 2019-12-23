@@ -28,8 +28,10 @@
                 </v-tooltip>
               </v-toolbar>
               <v-card-text>
-                <v-form>
+                <v-form @submit.prevent="submitForm">
                   <v-text-field
+                  required
+                  v-model="form.login"
                     label="Login"
                     name="login"
                     prepend-icon="person"
@@ -37,17 +39,32 @@
                   />
 
                   <v-text-field
+                  v-model="form.pass"
+                  required
                     id="password"
                     label="Password"
                     name="password"
                     prepend-icon="lock"
                     type="password"
                   />
+                   <v-btn color="primary" type="submit">Login</v-btn>
+                   <v-btn color="secondary" type="reset"
+                   @click="errorText = false"
+                   class="ml-4">Reset</v-btn>
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn color="primary">Login</v-btn>
+                     <v-alert
+                      :value="errorText"
+                      color="pink"
+                      dark
+                      border="top"
+                      transition="scale-transition"
+                      style="width: 100%;"
+                    >
+                      {{errorText}}
+                    </v-alert>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -61,6 +78,33 @@
 export default {
   props: {
     source: String,
+  },
+
+  data: () => ({
+    form: {
+      login: null,
+      pass: null,
+    },
+
+    errorText: false,
+  }),
+
+  methods: {
+    submitForm() {
+      if (!this.form.login || !this.form.pass) {
+        this.errorText = 'Please fill form';
+
+        setTimeout(() => {
+          this.errorText = false;
+        }, 2500);
+      }
+
+      this.$store.dispatch('userAuth', this.form).then((res) => {
+        console.log(res);
+      }).catch((err) => {
+        console.error(err);
+      });
+    },
   },
 };
 </script>

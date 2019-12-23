@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import * as API_CONF from '../config';
+import API from './api';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -14,15 +17,11 @@ export default new Vuex.Store({
   },
   actions: {
     userAuth({ commit }, payload) {
-      const url = new URL('http://localhost:3001');
-      const response = fetch(url,
-        {
-          method: 'POST',
-          body: payload,
-        });
-      const res = response.json();
-
-      commit('saveUserData', res);
+      API.fetchData(`${API_CONF.API_URL}/auth`, payload).then((res) => {
+        commit('saveUserData', res);
+      }).catch((err) => {
+        console.error(err);
+      });
     },
   },
   modules: {
