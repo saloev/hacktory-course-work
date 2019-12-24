@@ -1,9 +1,3 @@
-# xss-sql-injection
+# hacktory-course-work
 
-## Example of xss and sql injection
-
-### About what this web site ?
-
-### xss
-
-### sql injection
+vulnerability of saving git in root of directory of website
