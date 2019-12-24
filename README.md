@@ -1,3 +1,3 @@
 # hacktory-course-work
 
-vulnerability of saving git in root of directory of website
+vulnerability of saving git in root directory of website
