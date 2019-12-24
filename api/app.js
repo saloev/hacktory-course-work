@@ -38,7 +38,7 @@ app.post('/auth', (request, response) => {
     if (err) throw err;
 
     const user = rows[0];
-    if (!user) response.send({ user: null });
+    if (!user) response.send({});
     response.send(user);
   });
 });

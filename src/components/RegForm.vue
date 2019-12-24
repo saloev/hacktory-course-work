@@ -63,7 +63,7 @@
                       transition="scale-transition"
                       style="width: 100%;"
                     >
-                      {{errorText}}
+                      {{text}}
                     </v-alert>
               </v-card-actions>
             </v-card>
@@ -87,27 +87,17 @@ export default {
     text: '',
   }),
 
-  computed: {
-    user () {
-      return this.$store.getters.user;
-      // Or return basket.getters.fruitsCount
-      // (depends on your design decisions).
-    }
-  },
-  watch: {
-    user (newCount, oldCount) {
-      console.log(`We have ${newCount} fruits now, yaay!`)
-    }
-  },
-
    created() {
     this.$store.watch(
       (state, getters) => getters.user,
       (newValue, oldValue) => {
         const {login, id} = this.$store.state.user;
-        console.log(login, id);
         if (login && id) {
-          this.$router.push({name: 'about'});
+          this.$router.push({name: 'about', query: {login}});
+        } else {
+          this.text = 'Error login or password';
+          this.errorText = true;
+          this.hideErrorMessage();
         }
       },
     );
@@ -122,13 +112,10 @@ export default {
       }
 
       this.$store.dispatch('userAuth', this.form).then((res) => {
-
-          // this.$router.push({ name: 'about' });
       }).catch((err) => {
           this.text = 'User not found';
           this.errorText = true;
           this.hideErrorMessage();
-        console.error(err);
       });
     },
 
